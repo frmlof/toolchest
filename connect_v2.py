@@ -27,7 +27,7 @@ REGIONS = ('us-east-1',
            'us-west-1',
            'us-west-2')
 
-SSHSTR = 'ssh -i ~/.ssh/magicKey.pem'
+SSHSTR = 'ssh -i ~/.ssh/<YOUR-KEY>'
 
 def discoverHost(region,myos):
     mysession = boto3.Session(region_name = region)
