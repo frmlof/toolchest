@@ -50,13 +50,13 @@ if __name__ == '__main__':
             myos = args.os
             getHost = discoverHost(region,myos)
             if getHost:
-                if args.os == 'rhel7' or args.os == 'suse' or args.os == 'amazon':
+                if args.os == 'rhel6' or args.os == 'rhel7' or args.os == 'suse' or args.os == 'amazon':
                     user = 'ec2-user'
-                elif args.os == 'centos':
+                elif args.os == 'centos6' or args.os == 'centos7':
                     user = 'centos'
                 elif args.os == 'debian':
                     user = 'admin'
-                elif args.os == 'ubuntu':
+                elif args.os == 'ubuntu14' or args.os == 'ubuntu16':
                     user = 'ubuntu'
                 cmd = ('%s %s@%s' % (SSHSTR,user,getHost))
                 os.system(cmd)
