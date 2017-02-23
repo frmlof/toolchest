@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-#    connect.py version 0.0.1
+#    connect.py v. 0.0.1
+#    Nazim Aliyev <nazim.b.aliyev AT gmail DOT com>
 #    connect.py is part of tool chest I am developing for my own needs
 #    For now code will released under GPLv3
 #
