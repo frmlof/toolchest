@@ -27,6 +27,7 @@ REGIONS = ('us-east-1',
            'us-west-1',
            'us-west-2')
 
+# Specify path to your ssh key pair or pem file here
 SSHSTR = 'ssh -i ~/.ssh/<YOUR_KEY>'
 
 def discoverHost(region,myos):
@@ -42,7 +43,7 @@ def discoverHost(region,myos):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--os', dest = 'os', help = 'Specify target Operating System')
+    parser.add_argument('--os', dest = 'os', help = 'Specify target Operating System tag associated with your instance')
     args = parser.parse_args()
 
     if args.os:
@@ -50,7 +51,7 @@ if __name__ == '__main__':
             myos = args.os
             getHost = discoverHost(region,myos)
             if getHost:
-                if args.os == 'rhel6' or args.os == 'rhel7' or args.os == 'suse' or args.os == 'amazon':
+                if args.os == 'rhel6' or args.os == 'rhel7' or args.os == 'suse12' or args.os == 'suse11' or args.os == 'amazon':
                     user = 'ec2-user'
                 elif args.os == 'centos6' or args.os == 'centos7':
                     user = 'centos'
