@@ -18,6 +18,13 @@ These are tags I have setup for easy access, you free to update or change code p
 | Name          | workhorse       |
 | OS            | key word        |
 
+Instances with tags above I stop-start on daily basis. I also add *special* tag
+| Key           | Value           |
+| ------------- |:---------------:|
+| Name          | keepalive       |
+
+with myenv --down any instance that does not have tags listed above will get terminated. Same script can bring instances back up, but it will ignore instances with "keepalive" tag.
+
 These are list of pre-defined keywords
 
 | Word          | Distro           |
