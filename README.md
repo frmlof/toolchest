@@ -19,6 +19,7 @@ These are tags I have setup for easy access, you free to update or change code p
 | OS            | key word        |
 
 Instances with tags above I stop-start on daily basis. I also add *special* tag
+
 | Key           | Value           |
 | ------------- |:---------------:|
 | Name          | keepalive       |
