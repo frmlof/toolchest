@@ -37,7 +37,7 @@ def envUp(region):
         for tags in instance.tags:
             if tags['Key'] == 'Name' and tags['Value'] == 'workhorse' and instance.state['Name'] == 'stopped':
                 instance.start()
-                instance.wait_until_running()
+#                instance.wait_until_running()
                 region_inst.append("Bringing up %s in a %s" % (instance.instance_id,region))
     return region_inst
 
@@ -48,17 +48,13 @@ def envDown(region):
     for instance in ec2.instances.all():
         if instance.state['Code'] == 16:
             for tags in instance.tags:
-                if tags['Key'] == 'Name' and tags['Value'] == 'workhorse':
+                if tags['Key'] == 'OS' or tags['Value'] == 'workhorse' or tags['Value'] == 'keepalive':
                     instance.stop()
-                    instance.wait_until_stopped()
-                    region_inst.append('Stopping %s in %s' % (instance.instance_id,region))
-                elif tags['Key'] == 'Name' and tags['Value'] == 'keepalive':
-                    instance.stop()
-                    instance.wait_until_stopped()
+#                    instance.wait_until_stopped()
                     region_inst.append('Stopping %s in %s' % (instance.instance_id,region))
                 else:
                     instance.terminate()
-                    instance.wait_until_terminated()
+#                    instance.wait_until_terminated()
                     region_inst.append('Terminating %s in %s' % (instance.instance_id,region))
     return region_inst
 
