@@ -72,7 +72,7 @@ if __name__ == '__main__':
     elif args.down:
         for region in REGIONS:
             tearItDown = envDown(region)
-            for line in tearItDown:
+            for line in set(tearItDown):
                 print(line)
     else:
         sys.exit('Usage: myenv --up|--down')
