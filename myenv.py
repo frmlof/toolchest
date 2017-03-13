@@ -37,7 +37,6 @@ def envUp(region):
         for tags in instance.tags:
             if tags['Key'] == 'Name' and tags['Value'] == 'workhorse' and instance.state['Name'] == 'stopped':
                 instance.start()
-#                instance.wait_until_running()
                 region_inst.append("Bringing up %s in a %s" % (instance.instance_id,region))
     return region_inst
 
@@ -50,18 +49,27 @@ def envDown(region):
             for tags in instance.tags:
                 if tags['Key'] == 'OS' or tags['Value'] == 'workhorse' or tags['Value'] == 'keepalive':
                     instance.stop()
-#                    instance.wait_until_stopped()
                     region_inst.append('Stopping %s in %s' % (instance.instance_id,region))
                 else:
                     instance.terminate()
-#                    instance.wait_until_terminated()
                     region_inst.append('Terminating %s in %s' % (instance.instance_id,region))
+    return region_inst
+
+def envList(region):
+    region_inst = []
+    session = boto3.Session(region_name = region)
+    ec2 = session.resource('ec2')
+    for instance in ec2.instances.all():
+        if instance.state['Code'] == 16:
+            for tag in instance.tags:
+                region_inst.append('%s in %s' % (instance.instance_id, region))
     return region_inst
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--up', dest = 'up', action='store_true', help = 'Bring all instances with "worhorse" tag up')
-    parser.add_argument('--down', dest = 'down', action='store_true', help = 'Stop all instances with "worhorse" and "donoterm" down, terminate all other instance(s)')
+    parser.add_argument('--up', dest = 'up', action = 'store_true', help = 'Bring all instances with "worhorse" tag up')
+    parser.add_argument('--down', dest = 'down', action = 'store_true', help = 'Stop all instances with "worhorse" and "donoterm" down, terminate all other instance(s)')
+    parser.add_argument('--list', dest = 'list', action = 'store_true', help = 'List runing instances in regions of my interest')
     args = parser.parse_args()
 
     if args.up:
@@ -74,5 +82,10 @@ if __name__ == '__main__':
             tearItDown = envDown(region)
             for line in set(tearItDown):
                 print(line)
+    elif args.list:
+        for region in REGIONS:
+            listItAll = envList(region)
+            for line in set(listItAll):
+                print(line)
     else:
-        sys.exit('Usage: myenv --up|--down')
+        sys.exit('Usage: myenv --up || --down || --list')
