@@ -34,10 +34,11 @@ def envUp(region):
     session = boto3.Session(region_name = region)
     ec2 = session.resource('ec2')
     for instance in ec2.instances.all():
-        for tags in instance.tags:
-            if tags['Key'] == 'Name' and tags['Value'] == 'workhorse' and instance.state['Name'] == 'stopped':
-                instance.start()
-                region_inst.append("Bringing up %s in a %s" % (instance.instance_id,region))
+        if instance.state['Code'] == 80:
+            for tags in instance.tags:
+                if tags['Value'] == 'workhorse':
+                    instance.start()
+                    region_inst.append("Bringing up %s in a %s" % (instance.instance_id,region))
     return region_inst
 
 def envDown(region):
