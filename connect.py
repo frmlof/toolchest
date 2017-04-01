@@ -38,10 +38,13 @@ def discoverHost(region,myos):
     ec2 = mysession.resource('ec2')
     host_id = ''
     for instance in ec2.instances.all():
-        if instance.state['Name'] == 'running':
-            for tags in instance.tags:
-                if tags['Key'] == 'OS' and tags['Value'] == myos:
-                    host_id = instance.public_dns_name
+        try:
+            if instance.state['Code'] == 16:
+                for tags in instance.tags:
+                    if tags['Key'] == 'OS' and tags['Value'] == myos:
+                        host_id = instance.public_dns_name
+        except(TypeError):
+            pass
     return host_id
 
 if __name__ == '__main__':

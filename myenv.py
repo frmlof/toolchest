@@ -21,6 +21,7 @@
 """
 
 import sys
+import time
 import boto3
 import argparse
 
@@ -35,10 +36,13 @@ def envUp(region):
     ec2 = session.resource('ec2')
     for instance in ec2.instances.all():
         if instance.state['Code'] == 80:
-            for tags in instance.tags:
-                if tags['Value'] == 'workhorse':
-                    instance.start()
-                    region_inst.append("Bringing up %s in a %s" % (instance.instance_id,region))
+            try:
+                for tags in instance.tags:
+                    if tags['Value'] == 'workhorse':
+                        instance.start()
+                        region_inst.append("Bringing up %s in a %s" % (instance.instance_id,region))
+            except(TypeError):
+                pass
     return region_inst
 
 def envDown(region):
@@ -47,13 +51,16 @@ def envDown(region):
     ec2 = session.resource('ec2')
     for instance in ec2.instances.all():
         if instance.state['Code'] == 16:
-            for tags in instance.tags:
-                if tags['Key'] == 'OS' or tags['Value'] == 'workhorse' or tags['Value'] == 'keepalive':
-                    instance.stop()
-                    region_inst.append('Stopping %s in %s' % (instance.instance_id,region))
-                else:
-                    instance.terminate()
-                    region_inst.append('Terminating %s in %s' % (instance.instance_id,region))
+            try:
+                for tags in instance.tags:
+                    if tags['Key'] == 'OS' or tags['Value'] == 'workhorse' or tags['Value'] == 'keepalive':
+                        instance.stop()
+                        region_inst.append('Stopping %s in %s' % (instance.instance_id,region))
+                    else:
+                        instance.terminate()
+                        region_inst.append('Terminating %s in %s' % (instance.instance_id,region))
+            except(TypeError):
+                pass
     return region_inst
 
 def envList(region):
@@ -62,11 +69,15 @@ def envList(region):
     ec2 = session.resource('ec2')
     for instance in ec2.instances.all():
         if instance.state['Code'] == 16:
-            for tag in instance.tags:
-                region_inst.append('%s in %s' % (instance.instance_id, region))
+            try:
+                for tag in instance.tags:
+                    region_inst.append('%s in %s' % (instance.instance_id, region))
+            except(TypeError):
+                pass
     return region_inst
 
 if __name__ == '__main__':
+    start = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('--up', dest = 'up', action = 'store_true', help = 'Bring all instances with "worhorse" tag up')
     parser.add_argument('--down', dest = 'down', action = 'store_true', help = 'Stop all instances with "worhorse" and "donoterm" down, terminate all other instance(s)')
@@ -90,3 +101,6 @@ if __name__ == '__main__':
                 print(line)
     else:
         sys.exit('Usage: myenv --up || --down || --list')
+
+    end = time.time()
+    print('--\nI run in four regions in %.4f seconds' % (end-start))
