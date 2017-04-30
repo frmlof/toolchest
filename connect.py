@@ -31,7 +31,8 @@ REGIONS = ('us-east-1',
            'us-west-2')
 
 # Specify path to your ssh key pair or pem file here
-SSHSTR = 'ssh -i ~/.ssh/<YOUR_KEY>'
+# retiring in favor of config variable
+#SHSTR = 'ssh -i ~/.ssh/<YOUR_KEY>'
 
 def discoverHost(region,myos):
     mysession = boto3.Session(region_name = region)
@@ -46,6 +47,10 @@ def discoverHost(region,myos):
         except(TypeError):
             pass
     return host_id
+
+def getkeypath():
+    if os.path(
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

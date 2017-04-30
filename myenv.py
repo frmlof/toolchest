@@ -76,12 +76,35 @@ def envList(region):
                 pass
     return region_inst
 
+def envReplace(region,myos):
+    session = boto3.Session(region_name = region)
+    ec2 = session.resource('ec2')
+    filter = [{
+            'Name': 'tag:Name',
+            'Values': ['workhorse']
+        },
+        {
+            'Name': 'tag:OS',
+            'Values': [myos]
+        },
+        {
+            'Name': 'instance-state-name',
+            'Values': ['running']
+        }
+    ]
+    instances = ec2.instances.filter(Filters=filter)
+    my_image = [instance.image_id for instance in instances]
+    my_sid = [instance.subnet_id for instance in instances]
+    return my_image,my_sid
+
+
 if __name__ == '__main__':
     start = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('--up', dest = 'up', action = 'store_true', help = 'Bring all instances with "worhorse" tag up')
     parser.add_argument('--down', dest = 'down', action = 'store_true', help = 'Stop all instances with "worhorse" and "donoterm" down, terminate all other instance(s)')
     parser.add_argument('--list', dest = 'list', action = 'store_true', help = 'List runing instances in regions of my interest')
+    parser.add_argument('--replace', dest = 'replace', help = 'Replace one of your existing. ')
     args = parser.parse_args()
 
     if args.up:
@@ -99,6 +122,16 @@ if __name__ == '__main__':
             listItAll = envList(region)
             for line in set(listItAll):
                 print(line)
+    elif args.replace:
+        for region in REGIONS:
+            #replaceIt = envReplace(region, args.replace)
+            my_ami, my_sid = envReplace(region, args.replace)
+            #if replaceIt:
+            #    my_ami = ''.join(replaceIt)
+            target_ami = ''.join(my_ami)
+        print(target_ami)
+        #print(replaceIt)
+
     else:
         sys.exit('Usage: myenv --up || --down || --list')
 
