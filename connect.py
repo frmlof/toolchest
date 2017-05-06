@@ -1,23 +1,30 @@
 #!/usr/bin/env python
 
 """
-    Author: Nazim Aliyev (nazim.b.aliyev AT gmail DOT com)
-    Version: 0.0.1a / 02-24-2017
+    Version: 0.1.0 / 05-06-2017
 
     The connect.py is part of toolchest.
 
-    toolchest is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    Copyright (c) 2017 Nazim Aliyev
 
-    toolchest is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-    You should have received a copy of the GNU General Public License
-    along with toolchest.  If not, see <http://www.gnu.org/licenses/>.
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
 """
 
 import os
@@ -31,22 +38,37 @@ REGIONS = ('us-east-1',
            'us-west-2')
 
 # Specify path to your ssh key pair or pem file here
+<<<<<<< HEAD
+# retiring hard coded version in favor of flexibility
+#SSHSTR = 'ssh -i ~/.ssh/<YOUR_KEY>'
+=======
 # retiring in favor of config variable
 #SHSTR = 'ssh -i ~/.ssh/<YOUR_KEY>'
+>>>>>>> b2404cc07968089a35e594efbb5dfb2b83eb0d53
 
 def discoverHost(region,myos):
     mysession = boto3.Session(region_name = region)
     ec2 = mysession.resource('ec2')
-    host_id = ''
-    for instance in ec2.instances.all():
-        try:
-            if instance.state['Code'] == 16:
-                for tags in instance.tags:
-                    if tags['Key'] == 'OS' and tags['Value'] == myos:
-                        host_id = instance.public_dns_name
-        except(TypeError):
-            pass
-    return host_id
+    filter = [{
+            'Name':'tag: OS',
+            'Values': [myos]
+        },
+        {
+            'Name':'instance-state-name',
+            'Values': ['running']
+
+    }]
+
+    instances = ec2.instances.filter(Filter=filter)
+    my_pal = [instance.public_ip_address for instance in instances]
+    host_ip = ''.join(my_pal)
+    return host_ip
+
+def checkBoto:
+    # some thing including creds
+
+def pathToPem:
+    # check if config exist and path is working.
 
 def getkeypath():
     if os.path(
