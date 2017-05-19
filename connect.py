@@ -29,7 +29,6 @@
 
 import os
 import sys
-import boto3
 import argparse
 
 REGIONS = ('us-east-1',
@@ -37,14 +36,16 @@ REGIONS = ('us-east-1',
            'us-west-1',
            'us-west-2')
 
-# Specify path to your ssh key pair or pem file here
-<<<<<<< HEAD
-# retiring hard coded version in favor of flexibility
-#SSHSTR = 'ssh -i ~/.ssh/<YOUR_KEY>'
-=======
+# Check if boto3 present
+try:
+    import boto3
+except ImportError:
+    sys.exit("To run this script please install boto3: pip install boto3")
+
+
+
 # retiring in favor of config variable
 #SHSTR = 'ssh -i ~/.ssh/<YOUR_KEY>'
->>>>>>> b2404cc07968089a35e594efbb5dfb2b83eb0d53
 
 def discoverHost(region,myos):
     mysession = boto3.Session(region_name = region)
@@ -64,14 +65,20 @@ def discoverHost(region,myos):
     host_ip = ''.join(my_pal)
     return host_ip
 
-def checkBoto:
-    # some thing including creds
-
 def pathToPem:
-    # check if config exist and path is working.
+    #
+    if os.path.isfile('~/.aws/connect'):
+        # read content
+        # check if path really exist
+    else:
+        # ask to add path to pem file
+        # check if path really exist
 
 def getkeypath():
-    if os.path(
+    if os.path.isfile('~/.aws/credentials'):
+        # credentials file exist
+        # check if key is not empty
+    else
 
 
 if __name__ == '__main__':
