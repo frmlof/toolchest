@@ -30,6 +30,7 @@
 import os
 import sys
 import argparse
+import ConfigParser
 
 REGIONS = ('us-east-1',
            'us-east-2',
@@ -42,6 +43,8 @@ try:
 except ImportError:
     sys.exit("To run this script please install boto3: pip install boto3")
 
+# path to configuration file
+configFile = '~/.aws/config'
 
 
 # retiring in favor of config variable
@@ -67,18 +70,25 @@ def discoverHost(region,myos):
 
 def pathToPem:
     #
-    if os.path.isfile('~/.aws/connect'):
+    path = ConfigParser.ConfigParser()
+    if os.path.isfile(configFile):
         # read content
         # check if path really exist
+        config.read(configFile)
+        keyPath = config.get('KeyPath','PEM')
     else:
         # ask to add path to pem file
         # check if path really exist
+        sys.exit('The connect was not setup yet. Please run script with "--init"')
+    return keyPath
 
 def getkeypath():
     if os.path.isfile('~/.aws/credentials'):
         # credentials file exist
         # check if key is not empty
-    else
+    else:
+        sys.exit('Connect requires CLI-like credentials in place.')
+
 
 
 if __name__ == '__main__':
