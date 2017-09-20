@@ -12,9 +12,6 @@ def setServiceConnection(region, cluster):
     # Establish service connection
     session = boto3.Session(region_name=region)
     ec2 = session.resource('ec2')
-    print(cluster)
-
-    #ec2 = boto3.client('ec2', region_name = region)
 
     # Set filter
     filter = [{
@@ -31,7 +28,6 @@ def setServiceConnection(region, cluster):
     the_dude = [instance.public_ip_address for instance in instances]
     host_id = ''.join(the_dude)
     return host_id
-    #return the_dude
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -57,6 +53,3 @@ if __name__ == '__main__':
         else:
             region = args.region
             get_host = setServiceConnection(region, args.cluster)
-
-    print(region)
-    print(get_host)

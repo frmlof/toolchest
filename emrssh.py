@@ -10,7 +10,7 @@ REGIONS = ('us-east-1',
            'us-west-1',
            'us-west-2')
 
-SSH_STR = 'ssh -i ~/.ssh/magicKey.pem'
+SSH_STR = 'ssh -i ~/.ssh/magicKey.pem -o TCPKeepAlive=yes -o ServerAliveInterval=120'
 
 def setServiceConnection(region, cluster):
     # Establish service connection
@@ -39,8 +39,9 @@ if __name__ == '__main__':
         # try to connect
         for region in REGIONS:
             get_host_name = setServiceConnection(region, sys.argv[1])
-            cmd = ('%s hadoop@%s' % (SSH_STR, get_host_name))
-        os.system(cmd)
-        #print(cmd)
+            if get_host_name:
+                print(get_host_name)
+                cmd = ('%s hadoop@%s' % (SSH_STR, str(get_host_name)))
+                os.system(cmd)
     else:
         sys.exit('You must specify EMR cluster id to connect to Master node')
