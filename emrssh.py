@@ -35,13 +35,21 @@ def setServiceConnection(region, cluster):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
+    #if len(sys.argv) > 1:
+    if sys.argv[1]:
         # try to connect
         for region in REGIONS:
             get_host_name = setServiceConnection(region, sys.argv[1])
             if get_host_name:
                 print(get_host_name)
                 cmd = ('%s hadoop@%s' % (SSH_STR, str(get_host_name)))
-                os.system(cmd)
+                print(cmd)
+               # os.system(cmd)
+        """
+        get_host_name = [setServiceConnection(region, sys.argv[1]) for region in REGIONS]
+        filter(None, get_host_name)
+        if get_host_name:
+            print(get_host_name)
+        """
     else:
         sys.exit('You must specify EMR cluster id to connect to Master node')
