@@ -6,7 +6,7 @@ import random
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        generate_string = lambda n: ''.join([random.choice(string.lowercase + string.uppercase) for i in xrange(n)])
+        generate_string = lambda n: ''.join([random.choice(string.lowercase + string.uppercase + string.digits) for i in xrange(n)])
         my_string = generate_string(int(sys.argv[1]))
         print(my_string)
     else:
