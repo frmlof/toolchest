@@ -1,0 +1,26 @@
+Type: "AWS::EMR::Cluster"
+Properties:
+  AdditionalInfo: JSON object
+  Applications:
+      - Spark
+      - Hadoop
+      - Zeppelin
+  AutoScalingRole: String
+  BootstrapActions:
+    - Bootstrap Actions
+  Configurations:
+    - Configurations
+  CustomAmiId: String
+  EbsRootVolumeSize: Integer
+  Instances:
+    JobFlowInstancesConfig
+  JobFlowRole: String
+  LogUri: String
+  Name: String
+  ReleaseLabel: String
+  ScaleDownBehavior: String
+  SecurityConfiguration: String
+  ServiceRole: String
+  Tags:
+    - Resource Tag
+  VisibleToAllUsers: Boolean

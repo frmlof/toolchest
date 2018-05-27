@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+lust
 
 """
     Version: 0.1.0 / 05-06-2017

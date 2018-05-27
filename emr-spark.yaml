@@ -1,0 +1,28 @@
+Type: "AWS::EMR::Cluster"
+Properties:
+  AdditionalInfo: JSON object
+  Applications:
+      - Spark
+      - Hadoop
+      - Zeppelin
+      - Hive
+  EbsRootVolumeSize: 10
+  Instances:
+    MasterInstanceGroup:
+        InstanceCount: 1
+        InstanceType: "c3.2xlarge"
+        Market: "ON_DEMAND"
+        Name: "Master"
+    CoreInstanceGroup:
+        InstanceCount: 2
+        InstanceType: "c3.2xlarge"
+        Market: "ON_DEMAND"
+        Name: "Core"
+    TerminationProtected: false
+  JobFlowRole: "EMR_EC2_DefaultRole"
+  LogUri: "s3://aws-logs-014120016901-us-east-1/elasticmapreduce"
+  Name: "Spark-Zeppelin-Hive"
+  ReleaseLabel: "5.12.0"
+  ServiceRole: "EMR_DefaultRole"
+
+  VisibleToAllUsers: true
